@@ -179,7 +179,7 @@ def _mark_maxima(holes_array):
     for band in range(0, height):
         for k in range(1, width - 1):
             if (holes_array[band, k - 1] >= holes_array[band, k]
-                    or holes_array[band, k + 1] >= holes_array[band, k]):
+                    and holes_array[band, k + 1] >= holes_array[band, k]):
                 not_maxima.append([band, k])
 
     # Need to assign false after inspection
@@ -211,7 +211,7 @@ def _mark_minima(electrons_array):
     # find the bands where numbers either side aren't bigger (the maxima)
     for band in range(0, height):
         for k in range(1, width - 1):
-            if (electrons_array[band, k - 1] <= electrons_array[band, k] or
+            if (electrons_array[band, k - 1] <= electrons_array[band, k] and
                     electrons_array[band, k + 1] <= electrons_array[band, k]):
                 not_minima.append([band, k])
 
