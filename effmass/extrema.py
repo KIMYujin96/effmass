@@ -1,3 +1,4 @@
+
 #! /usr/bin/env python3
 
 """
@@ -176,10 +177,23 @@ def _mark_maxima(holes_array):
 
     # find the bands where numbers either side aren't bigger (the maxima)
     # will also include inflexion but needed to get HSP's
+    # this was adapted for use with MOF's
     for band in range(0, height):
         for k in range(1, width - 1):
-            if (holes_array[band, k - 1] >= holes_array[band, k]
-                    and holes_array[band, k + 1] >= holes_array[band, k]):
+            if (holes_array[band, k - 1] < holes_array[band, k]
+                    and holes_array[band, k + 1] > holes_array[band, k]):
+                not_maxima.append([band, k])
+
+    for band in range(0, height):
+        for k in range(1, width - 1):
+            if (holes_array[band, k - 1] > holes_array[band, k]
+                    and holes_array[band, k + 1] < holes_array[band, k]):
+                not_maxima.append([band, k])
+
+    for band in range(0, height):
+        for k in range(1, width - 1):
+            if (holes_array[band, k - 1] == holes_array[band, k]
+                    and holes_array[band, k + 1] == holes_array[band, k]):
                 not_maxima.append([band, k])
 
     # Need to assign false after inspection
@@ -209,10 +223,23 @@ def _mark_minima(electrons_array):
             not_minima.append([band, -1])
 
     # find the bands where numbers either side aren't bigger (the maxima)
+    # extra nested loops added for MOFs
     for band in range(0, height):
         for k in range(1, width - 1):
-            if (electrons_array[band, k - 1] <= electrons_array[band, k] and
-                    electrons_array[band, k + 1] <= electrons_array[band, k]):
+            if (electrons_array[band, k - 1] < electrons_array[band, k] and
+                    electrons_array[band, k + 1] > electrons_array[band, k]):
+                not_minima.append([band, k])
+
+    for band in range(0, height):
+        for k in range(1, width - 1):
+            if (electrons_array[band, k - 1] > electrons_array[band, k] and
+                    electrons_array[band, k + 1] < electrons_array[band, k]):
+                not_minima.append([band, k])
+
+    for band in range(0, height):
+        for k in range(1, width - 1):
+            if (electrons_array[band, k - 1] == electrons_array[band, k] and
+                    electrons_array[band, k + 1] == electrons_array[band, k]):
                 not_minima.append([band, k])
 
     # Need to assign false after inspection
